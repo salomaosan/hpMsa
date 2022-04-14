@@ -7,16 +7,16 @@ from hashlib import md5
 from xml.etree.ElementTree import fromstring, ElementTree as ET, dump as ETdump
 import json
 
-PROG = os.path.basename(sys.argv[0]).rstrip('.py')
-PROG_DESC = 'hp-msa client'
-USAGE = """Usage: hp-msa.py <HOSTNAME> <USERNAME> <PASSWORD> [lld|stats|data]"""
+#PROG = os.path.basename(sys.argv[0]).rstrip('.py')
+#PROG_DESC = 'hp-msa client'
+#USAGE = """Usage: hp-msa.py <HOSTNAME> <USERNAME> <PASSWORD> [lld|stats|data]"""
 
 class msa_storage(object):
     username = None
     password = None
     hostname = None
     sessionKey = None
-    zbxData = {'data': []}
+#    zbxData = {'data': []}
 
     def __init__(self, hostname, username, password):
         self.hostname = hostname
@@ -50,17 +50,23 @@ class msa_storage(object):
             for prop in obj:
                 if prop.get('name') == 'response-type':
                     response_type = prop.text
+                    print(prop.text)
                 if prop.get('name') == 'return-code':
                     return_code = int(prop.text)
+                    print(prop.text)
                 if prop.get('name') == 'response':
                     self.sessionKey = prop.text
-        print(response_type, return_code, self.sessionKey)
+                    print(prop.text)
+        #print(response_type, return_code, self.sessionKey)
         return return_code
     
     def _login_url(self):
         login = md5( '%s_%s' % (self.username, self.password)).hexdigest()
         url = 'https://%s/api/login/%s' % ( self.hostname, login)
         return url
+
+    def _request_show(self, api):
+        return self._request('show/' + api)
 
     def logout(self):
         self._request('exit')
@@ -69,5 +75,7 @@ if __name__ == "__main__":
 
     msa = msa_storage(sys.argv[1], sys.argv[2], sys.argv[3])
     msa.login()
-    print(msa._request('/show/cli-parameters'))
+    api = "controllers"
+    xml = msa._request_show(api)
+    print(xml)
     msa.logout()
