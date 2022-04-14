@@ -24,7 +24,10 @@ class msa_storage(object):
         self.password = password
     
     def _request_url(self, api):
-        return 'https://%s/api/%s' % (self.hostname, api)
+        url = 'https://%s/api/%s' % (self.hostname, api)
+        print(url)
+        #return 'https://%s/api/%s' % (self.hostname, api)
+        return url
     
     def _request(self, api):
         # print(self._request_url(api))
@@ -33,12 +36,12 @@ class msa_storage(object):
             req.add_header('dataType', 'api-brief')
             req.add_header('sessionKey', self.sessionKey)
             xml=urllib2.urlopen(req, context=ssl._create_unverified_context()).read()
-            if len(xml)>10:
-                return ET(fromstring(xml)).getroot()
-        return None
+            #if len(xml)>10:
+            #    return ET(fromstring(xml)).getroot()
+        return xml
     
     def _request_show(self, api):
-        return self._request('/show/' + api)
+        return self._request('show/' + api)
      
     def login(self):
         return_code = 0
@@ -64,9 +67,6 @@ class msa_storage(object):
         login = md5( '%s_%s' % (self.username, self.password)).hexdigest()
         url = 'https://%s/api/login/%s' % ( self.hostname, login)
         return url
-
-    def _request_show(self, api):
-        return self._request('show/' + api)
 
     def logout(self):
         self._request('exit')
