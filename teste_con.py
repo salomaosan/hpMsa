@@ -69,4 +69,5 @@ if __name__ == "__main__":
 
     msa = msa_storage(sys.argv[1], sys.argv[2], sys.argv[3])
     msa.login()
+    print(msa._request('/show/cli-parameters'))
     msa.logout()
