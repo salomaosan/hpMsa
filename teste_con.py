@@ -42,6 +42,9 @@ class msa_storage(object):
     
     def _request_show(self, api):
         return self._request('show/' + api)
+    
+    def dados(self, api):
+        return self._request_show(api)
      
     def login(self):
         return_code = 0
@@ -60,12 +63,13 @@ class msa_storage(object):
                 if prop.get('name') == 'response':
                     self.sessionKey = prop.text
                     print(prop.text)
-        #print(response_type, return_code, self.sessionKey)
         return return_code
     
     def _login_url(self):
-        login = md5( '%s_%s' % (self.username, self.password)).hexdigest()
-        url = 'https://%s/api/login/%s' % ( self.hostname, login)
+        login = md5('%s_%s' % (self.username, self.password)).hexdigest()
+        print(login)
+        url = f'https://{self.hostname}/api/login/{login}'
+        print(url)
         return url
 
     def logout(self):
@@ -76,6 +80,5 @@ if __name__ == "__main__":
     msa = msa_storage(sys.argv[1], sys.argv[2], sys.argv[3])
     msa.login()
     api = "controllers"
-    xml = msa._request_show(api)
-    print(xml)
+    print(msa.dados)
     msa.logout()
