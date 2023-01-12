@@ -3,9 +3,9 @@
 ## Sumario
 
 * [Objetivo](#Objetivo)
-* [Arquitetura](#Arquitetura)
+** [Arquitetura](#Arquitetura)
 * [Topologia](#Topologia)
-* [Housekeeping](#Housekeeping)
+* [House keeping](#House\ keeping)
 * [Timescale](#Timescale)
 * [Permissões](#Permissões)
 * [Templates](#Templates)
@@ -21,7 +21,7 @@
 
 ### Topologia
 
-### Housekeeping
+### House keeping
 
 ### Timescale
 
